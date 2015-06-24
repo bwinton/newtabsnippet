@@ -1,0 +1,12 @@
+{
+  "title": "NewTab Snippets",
+  "name": "newtabsnippet",
+  "version": "0.0.1",
+  "description": "An addon to add snippets to the newtab",
+  "main": "index.js",
+  "author": "Blake Winton <bwinton@latte.ca>",
+  "engines": {
+    "firefox": ">=38.0a1"
+  },
+  "license": "MPLv2"
+}
