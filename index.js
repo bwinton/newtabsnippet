@@ -1,10 +1,16 @@
+var { attach } = require('sdk/content/mod');
 var PrefSvc = require('sdk/preferences/service');
+var self = require('sdk/self');
+var { Style } = require('sdk/stylesheet/style');
 var tabs = require('sdk/tabs');
 
 var { Cu } = require('chrome');
 Cu.import('resource://gre/modules/UITelemetry.jsm');
 
 var telemetry = {};
+var style = Style({
+  uri: self.data.url('newtab-content.css')
+});
 
 var tabReady = function (tab) {
   if (!tab) {
@@ -16,9 +22,10 @@ var tabReady = function (tab) {
   }
 
   worker = tab.attach({
-    // contentScriptFile: self.data.url('newtabicons-content.js'),
-    contentScriptOptions: { 'bucket': telemetry.bucket }
+    contentScriptFile: self.data.url('newtab-content.js'),
+    contentScriptOptions: { 'bucket': telemetry.bucket, 'icon': self.data.url('chatheads.svg') }
   });
+  attach(style, tab);
 };
 
 exports.main = function () {

@@ -1,0 +1,26 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+/* eslint-env browser */
+
+.newtab-snippet {
+  margin: 1em;
+  font-size: 13px;
+  font-family: 'Lucida Grande';
+  cursor: pointer;
+}
+
+.newtab-snippet > .icon {
+  background-image: url(${self.options.icon});
+  background-repeat: no-repeat;
+  width: 30px;
+  min-height: 30px;
+  max-height: 30px;
+  margin: -6px 3px 0 0;
+}
+
+#newtab-margin-top {
+  z-index: 2;
+}
