@@ -17,6 +17,16 @@ exports.main = function () {
       return telemetry;
     });
   }
+
+  // If this is a first run, log the bucket.
+  if (PrefSvc.isSet('browser.newtab.preload.bucket')) {
+    telemetry.bucket = PrefSvc.get('browser.newtab.preload.bucket');
+  } else {
+    let bucket = Math.round(Math.random());
+    PrefSvc.set('browser.newtab.preload.bucket', bucket);
+    telemetry.bucket = bucket;
+  }
+
 };
 
 exports.onUnload = function (reason) {
@@ -24,8 +34,11 @@ exports.onUnload = function (reason) {
   let previous = PrefSvc.get('browser.newtab.preload.previous');
   PrefSvc.set('browser.newtab.preload', previous);
   PrefSvc.reset('browser.newtab.preload.previous');
+  PrefSvc.reset('browser.newtab.preload.bucket');
+  delete telemetry.bucket;
 
   if (UITelemetry.enabled && reason !== 'shutdown') {
     UITelemetry.removeSimpleMeasureFunction('newtabsnippets');
   }
+
 };
