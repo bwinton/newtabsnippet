@@ -1,6 +1,8 @@
 var { attach } = require('sdk/content/mod');
 var PrefSvc = require('sdk/preferences/service');
+var { PrefsTarget } = require('sdk/preferences/event-target');
 var self = require('sdk/self');
+var { setTimeout } = require('sdk/timers');
 var { Style } = require('sdk/stylesheet/style');
 var tabs = require('sdk/tabs');
 
@@ -11,6 +13,24 @@ var telemetry = {};
 var style = Style({
   uri: self.data.url('newtab-content.css')
 });
+
+var addTelemetryFunction = function () {
+  setTimeout( () => {
+    if (UITelemetry.enabled) {
+      telemetryEnabled = true;
+      UITelemetry.removeSimpleMeasureFunction('newtabsnippets');
+      UITelemetry.addSimpleMeasureFunction('newtabsnippets', function () {
+        return telemetry;
+      });
+    } else {
+      UITelemetry.removeSimpleMeasureFunction('newtabsnippets');
+    }
+  }, 0);
+};
+
+// listen to the same branch which reqire("sdk/simple-prefs") does
+var target = PrefsTarget({ branchName: "toolkit.telemetry."});
+target.on('enabled', addTelemetryFunction);
 
 var tabReady = function (tab) {
   if (!tab) {
@@ -33,12 +53,7 @@ exports.main = function () {
   PrefSvc.set('browser.newtab.preload', false);
   PrefSvc.set('browser.newtab.preload.previous', previous);
 
-  if (UITelemetry.enabled) {
-    UITelemetry.removeSimpleMeasureFunction('newtabsnippets');
-    UITelemetry.addSimpleMeasureFunction('newtabsnippets', function () {
-      return telemetry;
-    });
-  }
+  addTelemetryFunction();
 
   // If this is a first run, log the bucket.
   if (PrefSvc.isSet('browser.newtab.preload.bucket')) {
