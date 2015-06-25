@@ -45,6 +45,9 @@ var tabReady = function (tab) {
     contentScriptFile: self.data.url('newtab-content.js'),
     contentScriptOptions: { 'bucket': telemetry.bucket, 'icon': self.data.url('chatheads.svg') }
   });
+  worker.port.on('click', message => {
+    telemetry[message] = (telemetry[message] || 0) + 1;
+  })
   attach(style, tab);
 };
 

@@ -20,11 +20,25 @@ function addSnippet() {
     previousSnippet.remove();
   }
 
+  let cells = document.querySelectorAll('.newtab-cell');
+  for (let i = 0; i < cells.length; ++i) {
+    let cell = cells[i];
+    let j = i;
+    cell.addEventListener('click', event => {
+      self.port.emit('click', 'cell ' + (j + 1));
+    }, false);
+  };
+  let search = document.getElementById('newtab-search-submit');
+  search.addEventListener('click', event => {
+    self.port.emit('click', 'search');
+  }, false);
+
+
   if (self.options.bucket === 1) {
     let snippet = document.createElement('div');
     snippet.setAttribute('class', 'newtab-snippet');
-    snippet.addEventListener("click", event => {
-      console.log("BW: Got a click!!!");
+    snippet.addEventListener('click', event => {
+      self.port.emit('click', 'snippet');
     }, false);
 
     let icon = document.createElement('img');
