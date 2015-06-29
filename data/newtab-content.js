@@ -48,7 +48,8 @@ function addSnippet() {
     snippet.appendChild(icon);
 
     let content = document.createElement('a');
-    content.setAttribute('href', '?sample_rate=0.1&snippet_name=5210#');
+    content.id = 'newtab-snippet-link';
+    content.setAttribute('href', 'https://www.mozilla.org/en-US/firefox/hello/');
     content.textContent = 'Firefox Hello now features screen sharing. Connect and collaborate with anyone, anywhere for free. Try it now.';
     snippet.appendChild(content);
 
