@@ -7,9 +7,12 @@
 
 .newtab-snippet {
   margin: 1em;
+  padding: 14px 16px 8px;
+  border-radius: 4px;
   font-size: 13px;
-  font-family: 'Lucida Grande';
+  font-family: 'Lucida Grande', Arial, sans-serif;
   cursor: pointer;
+  transition: box-shadow 100ms ease-in-out;
 }
 
 .newtab-snippet > .icon {
@@ -23,4 +26,8 @@
 
 #newtab-margin-top {
   z-index: 2;
+}
+
+.newtab-snippet:hover {
+  box-shadow: 0 0 6px 2px #4CB1FF;
 }
