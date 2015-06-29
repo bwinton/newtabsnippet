@@ -25,12 +25,12 @@ function addSnippet() {
     let cell = cells[i];
     let j = i;
     cell.addEventListener('click', event => {
-      self.port.emit('click', 'cell ' + (j + 1));
+      self.port.emit('click', {type: 'cell', data: (j + 1)});
     }, false);
   };
   let search = document.getElementById('newtab-search-submit');
   search.addEventListener('click', event => {
-    self.port.emit('click', 'search');
+    self.port.emit('click', {type: 'search'});
   }, false);
 
 
@@ -38,7 +38,8 @@ function addSnippet() {
     let snippet = document.createElement('div');
     snippet.setAttribute('class', 'newtab-snippet');
     snippet.addEventListener('click', event => {
-      self.port.emit('click', 'snippet');
+      var url = document.getElementById('newtab-snippet-link').getAttribute('href');
+      self.port.emit('click', {type: 'snippet', data: url});
     }, false);
 
     let icon = document.createElement('img');
