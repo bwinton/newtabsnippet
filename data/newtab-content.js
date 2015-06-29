@@ -54,10 +54,6 @@ function addSnippet() {
     snippet.appendChild(content);
 
     container.appendChild(snippet);
-  } else {
-    let error = document.createElement('div');
-    error.textContent = "Sorry, try again."
-    container.appendChild(error);
   }
 }
 
