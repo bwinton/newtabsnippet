@@ -59,10 +59,26 @@ var tabReady = function (tab) {
   attach(style, tab);
 };
 
+function setPref(name, value) {
+  let previous = PrefSvc.get(name);
+  PrefSvc.set(name, value);
+  PrefSvc.set(name + '.previous', previous);
+}
+
+function restorePref(name) {
+  if (PrefSvc.isSet(name + '.previous')) {
+    let previous = PrefSvc.get(name + '.previous');
+    PrefSvc.set(name, previous);
+    PrefSvc.reset(name + '.previous');
+  }
+}
+
 exports.main = function () {
-  let previous = PrefSvc.get('browser.newtab.preload');
-  PrefSvc.set('browser.newtab.preload', false);
-  PrefSvc.set('browser.newtab.preload.previous', previous);
+  setPref('browser.newtab.preload', false);
+
+  if (!PrefSvc.isSet('browser.startup.homepage')) {
+    setPref('browser.startup.homepage', 'about:newtab')
+  }
 
   addTelemetryFunction();
 
@@ -81,9 +97,9 @@ exports.main = function () {
 
 exports.onUnload = function (reason) {
   tabs.removeListener('ready', tabReady);
-  let previous = PrefSvc.get('browser.newtab.preload.previous');
-  PrefSvc.set('browser.newtab.preload', previous);
-  PrefSvc.reset('browser.newtab.preload.previous');
+  restorePref('browser.newtab.preload');
+  restorePref('browser.startup.homepage');
+
   PrefSvc.reset('browser.newtab.preload.bucket');
   delete telemetry.bucket;
 
