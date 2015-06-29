@@ -46,7 +46,15 @@ var tabReady = function (tab) {
     contentScriptOptions: { 'bucket': telemetry.bucket, 'icon': self.data.url('chatheads.svg') }
   });
   worker.port.on('click', message => {
-    telemetry[message] = (telemetry[message] || 0) + 1;
+    var key = message.type;
+    if (key === 'cell') {
+      key += ' ' + message.data;
+    }
+    telemetry[key] = (telemetry[key] || 0) + 1;
+
+    if (key === 'snippet') {
+      tab.url = message.data;
+    }
   })
   attach(style, tab);
 };
