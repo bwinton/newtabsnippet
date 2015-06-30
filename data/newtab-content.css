@@ -24,10 +24,10 @@
   margin: -6px 3px 0 0;
 }
 
-#newtab-margin-top {
-  z-index: 2;
-}
-
 .newtab-snippet:hover {
   box-shadow: 0 0 6px 2px #4CB1FF;
+}
+
+#newtab-scrollbox[page-disabled] .newtab-snippet {
+  display: none;
 }
