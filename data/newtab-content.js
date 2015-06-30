@@ -24,12 +24,13 @@ function addSnippet() {
   for (let i = 0; i < cells.length; ++i) {
     let cell = cells[i];
     let j = i;
-    cell.addEventListener('click', event => {
+    cell.addEventListener('click', () => { // eslint-disable-line no-loop-func
       self.port.emit('click', {type: 'cell', data: (j + 1)});
     }, false);
-  };
+  }
+
   let search = document.getElementById('newtab-search-submit');
-  search.addEventListener('click', event => {
+  search.addEventListener('click', () => {
     self.port.emit('click', {type: 'search'});
   }, false);
 
@@ -37,7 +38,7 @@ function addSnippet() {
   if (self.options.bucket === 1) {
     let snippet = document.createElement('div');
     snippet.setAttribute('class', 'newtab-snippet');
-    snippet.addEventListener('click', event => {
+    snippet.addEventListener('click', () => {
       var url = document.getElementById('newtab-snippet-link').getAttribute('href');
       self.port.emit('click', {type: 'snippet', data: url});
     }, false);

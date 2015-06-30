@@ -1,3 +1,12 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+/*global UITelemetry:false*/
+
+'use strict';
+
 var { attach } = require('sdk/content/mod');
 var PrefSvc = require('sdk/preferences/service');
 var { PrefsTarget } = require('sdk/preferences/event-target');
@@ -17,7 +26,6 @@ var style = Style({
 var addTelemetryFunction = function () {
   setTimeout( () => {
     if (UITelemetry.enabled) {
-      telemetryEnabled = true;
       UITelemetry.removeSimpleMeasureFunction('newtabsnippets');
       UITelemetry.addSimpleMeasureFunction('newtabsnippets', function () {
         return telemetry;
@@ -29,7 +37,7 @@ var addTelemetryFunction = function () {
 };
 
 // listen to the same branch which reqire("sdk/simple-prefs") does
-var target = PrefsTarget({ branchName: "toolkit.telemetry."});
+var target = PrefsTarget({ branchName: 'toolkit.telemetry.'});
 target.on('enabled', addTelemetryFunction);
 
 var tabReady = function (tab) {
@@ -41,7 +49,7 @@ var tabReady = function (tab) {
     return;
   }
 
-  worker = tab.attach({
+  var worker = tab.attach({
     contentScriptFile: self.data.url('newtab-content.js'),
     contentScriptOptions: { 'bucket': telemetry.bucket, 'icon': self.data.url('chatheads.svg') }
   });
@@ -55,7 +63,7 @@ var tabReady = function (tab) {
     if (key === 'snippet') {
       tab.url = message.data;
     }
-  })
+  });
   attach(style, tab);
 };
 
@@ -77,7 +85,7 @@ exports.main = function () {
   setPref('browser.newtab.preload', false);
 
   if (!PrefSvc.isSet('browser.startup.homepage')) {
-    setPref('browser.startup.homepage', 'about:newtab')
+    setPref('browser.startup.homepage', 'about:newtab');
   }
 
   addTelemetryFunction();
