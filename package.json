@@ -1,7 +1,7 @@
 {
   "title": "NewTab Snippets",
   "name": "newtabsnippet",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An addon to add snippets to the newtab",
   "main": "index.js",
   "author": "Blake Winton <bwinton@latte.ca>",

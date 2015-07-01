@@ -9,48 +9,70 @@
 
 function getInsertionPoint (bucket) {
   var container = null;
+  var reference = null;
   switch (bucket) {
-    case 1:
-      container = window.document.getElementById('newtab-margin-top');
-      break;
-    default:
-      container = {appendChild: function () {}};
-      break;
+  case 1:
+    container = window.document.getElementById('newtab-margin-top');
+    break;
+  case 2:
+    container = window.document.getElementById('newtab-vertical-margin');
+    reference = window.document.getElementById('newtab-search-container');
+    break;
+  default:
+    container = {insertBefore: function () {}};
+    break;
+  }
+  return [container, reference];
+}
+
+function getContent (bucket) {
+  var container = null;
+  switch (bucket) {
+  case 1:
+  case 2:
+    container = document.createElement('div');
+    container.setAttribute('class', 'container');
+
+    let snippet = document.createElement('div');
+    snippet.setAttribute('class', 'newtab-snippet');
+    snippet.addEventListener('click', () => {
+      var url = document.getElementById('newtab-snippet-link').getAttribute('href');
+      self.port.emit('click', {type: 'snippet', data: url});
+    }, false);
+    container.appendChild(snippet);
+
+    let icon = document.createElement('img');
+    icon.setAttribute('class', 'icon');
+    icon.style.backgroundImage = `url(${self.options.icon})`;
+    snippet.appendChild(icon);
+
+    let content = document.createElement('a');
+    content.id = 'newtab-snippet-link';
+    content.setAttribute('href', 'https://www.mozilla.org/en-US/firefox/hello/');
+    content.textContent = 'Firefox Hello now features screen sharing. Connect and collaborate with anyone, anywhere for free. Try it now.';
+    snippet.appendChild(content);
+    break;
+
+  default:
+    break;
   }
   return container;
 }
 
-function getContent (bucket) {
-  var snippet = null;
+function modifyContent (bucket, container, reference) {
   switch (bucket) {
-    case 1:
-      snippet = document.createElement('div');
-      snippet.setAttribute('class', 'newtab-snippet');
-      snippet.addEventListener('click', () => {
-        var url = document.getElementById('newtab-snippet-link').getAttribute('href');
-        self.port.emit('click', {type: 'snippet', data: url});
-      }, false);
-
-      let icon = document.createElement('img');
-      icon.setAttribute('class', 'icon');
-      icon.style.backgroundImage = `url(${self.options.icon})`;
-      snippet.appendChild(icon);
-
-      let content = document.createElement('a');
-      content.id = 'newtab-snippet-link';
-      content.setAttribute('href', 'https://www.mozilla.org/en-US/firefox/hello/');
-      content.textContent = 'Firefox Hello now features screen sharing. Connect and collaborate with anyone, anywhere for free. Try it now.';
-      snippet.appendChild(content);
-      break;
-
-    default:
-      break;
+  case 2:
+    container.children[0].appendChild(reference);
+    break;
+  default:
+    break;
   }
-  return snippet;
+
+  return;
 }
 
 function addSnippet() {
-  let container = getInsertionPoint(self.options.bucket);
+  let [container, reference] = getInsertionPoint(self.options.bucket);
 
   if (container === null) {
     setTimeout(addSnippet, 1000);
@@ -76,7 +98,8 @@ function addSnippet() {
     self.port.emit('click', {type: 'search'});
   }, false);
 
-  container.appendChild(getContent(self.options.bucket));
+  container.insertBefore(getContent(self.options.bucket), reference);
+  modifyContent(self.options.bucket, container, reference);
 }
 
 addSnippet();

@@ -94,7 +94,7 @@ exports.main = function () {
   if (PrefSvc.isSet('browser.newtab.preload.bucket')) {
     telemetry.bucket = PrefSvc.get('browser.newtab.preload.bucket');
   } else {
-    let bucket = Math.round(Math.random());
+    let bucket = Math.floor(Math.random() * 3);
     PrefSvc.set('browser.newtab.preload.bucket', bucket);
     telemetry.bucket = bucket;
   }
