@@ -56,7 +56,7 @@ var tabReady = function (tab) {
   worker.port.on('click', message => {
     var key = message.type;
     if (key === 'cell') {
-      key += ' ' + message.data;
+      key += ' ' + message.data + ' ' + message.subtype;
     }
     telemetry[key] = (telemetry[key] || 0) + 1;
 

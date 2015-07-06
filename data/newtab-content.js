@@ -89,7 +89,8 @@ function addSnippet() {
     let cell = cells[i];
     let j = i;
     cell.addEventListener('click', () => { // eslint-disable-line no-loop-func
-      self.port.emit('click', {type: 'cell', data: (j + 1)});
+      let subtype = cell.querySelector('.newtab-site').getAttribute('type');
+      self.port.emit('click', {type: 'cell', subtype: subtype, data: (j + 1)});
     }, false);
   }
 
