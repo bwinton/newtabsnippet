@@ -18,6 +18,7 @@
 .newtab-snippet > .icon {
   background-image: url(${self.options.icon});
   background-repeat: no-repeat;
+  background-size: 30px;
   width: 30px;
   min-height: 30px;
   max-height: 30px;

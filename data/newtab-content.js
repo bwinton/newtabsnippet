@@ -43,13 +43,13 @@ function getContent (bucket) {
 
     let icon = document.createElement('img');
     icon.setAttribute('class', 'icon');
-    icon.style.backgroundImage = `url(${self.options.icon})`;
+    icon.style.backgroundImage = `url(${self.options.snippet.icon})`;
     snippet.appendChild(icon);
 
     let content = document.createElement('a');
     content.id = 'newtab-snippet-link';
-    content.setAttribute('href', 'https://www.mozilla.org/en-US/firefox/hello/');
-    content.textContent = 'Firefox Hello now features screen sharing. Connect and collaborate with anyone, anywhere for free. Try it now.';
+    content.setAttribute('href', self.options.snippet.url);
+    content.textContent = self.options.snippet.text;
     snippet.appendChild(content);
     break;
 

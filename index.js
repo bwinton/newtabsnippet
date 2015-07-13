@@ -11,6 +11,7 @@ var { attach } = require('sdk/content/mod');
 var PrefSvc = require('sdk/preferences/service');
 var { PrefsTarget } = require('sdk/preferences/event-target');
 var self = require('sdk/self');
+var { getSnippet } = require('snippets');
 var { setTimeout } = require('sdk/timers');
 var { Style } = require('sdk/stylesheet/style');
 var tabs = require('sdk/tabs');
@@ -51,7 +52,7 @@ var tabReady = function (tab) {
 
   var worker = tab.attach({
     contentScriptFile: self.data.url('newtab-content.js'),
-    contentScriptOptions: { 'bucket': telemetry.bucket, 'icon': self.data.url('chatheads.svg') }
+    contentScriptOptions: { 'bucket': telemetry.bucket, 'snippet': getSnippet() }
   });
   worker.port.on('click', message => {
     var key = message.type;
