@@ -5,14 +5,21 @@
 
 /*csslint compatible-vendor-prefixes:false, ids:false */
 
+.container {
+  display: block;
+}
+
 .newtab-snippet {
   margin: 1em;
-  padding: 14px 16px 8px;
+  padding: 14px 16px;
   border-radius: 4px;
   font-size: 13px;
   font-family: 'Lucida Grande', Arial, sans-serif;
   cursor: pointer;
   transition: box-shadow 100ms ease-in-out;
+  display: block;
+  position: relative;
+  width: -moz-fit-content;
 }
 
 .newtab-snippet > .icon {
@@ -20,10 +27,20 @@
   background-repeat: no-repeat;
   background-size: 30px;
   width: 30px;
-  min-height: 30px;
-  max-height: 30px;
-  margin: -6px 3px 0 0;
-  vertical-align: top;
+  height: 30px;
+  margin: 0;
+  display: inline-block;
+  position: absolute;
+  top: calc(50% - 15px);
+}
+
+.newtab-snippet > a {
+  display: inline-block;
+  margin-left: 40px;
+}
+
+#newtab-margin-top .newtab-snippet > a {
+  max-width: calc(100vw - 250px);
 }
 
 .newtab-snippet:hover {
@@ -34,11 +51,10 @@
   display: none;
 }
 
-#newtab-vertical-margin > .container {
-  display: flex;
-  justify-content: center;
-}
-
 #newtab-margin-top > #newtab-search-container {
   -moz-box-flex: 1;
+}
+
+#newtab-vertical-margin > .container > .newtab-snippet {
+  margin: 1em auto;
 }
