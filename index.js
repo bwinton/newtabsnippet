@@ -106,10 +106,13 @@ exports.main = function () {
 
 exports.onUnload = function (reason) {
   tabs.removeListener('ready', tabReady);
-  restorePref('browser.newtab.preload');
-  restorePref('browser.startup.homepage');
 
-  PrefSvc.reset('browser.newtab.preload.bucket');
+  if (reason !== 'shutdown') {
+    restorePref('browser.newtab.preload');
+    restorePref('browser.startup.homepage');
+    PrefSvc.reset('browser.newtab.preload.bucket');
+  }
+
   delete telemetry.bucket;
 
   if (UITelemetry.enabled && reason !== 'shutdown') {
